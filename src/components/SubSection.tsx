@@ -21,7 +21,7 @@ export const Header = forwardRef(function Header(
   ref: React.Ref<HTMLDivElement>,
 ) {
   return (
-    <Section.Header ref={ref} className={twMerge("p-5", className)} bg={bg} {...props}>
+    <Section.Header ref={ref} className={twMerge("p-5 bg-green-50", className)} bg={bg} {...props}>
       {children}
     </Section.Header>
   )

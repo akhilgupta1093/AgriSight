@@ -20,16 +20,15 @@ export const getFarmerData = async (fieldID: number): Promise<FarmerData> => {
     return data
 }
 
-export const getWeatherForecast = async (lat: number, lng: number): Promise<WeatherForecastData> => {
-    const uri = 'https://us-central1-farmbase-b2f7e.cloudfunctions.net/getForecastWeatherFromLatLong'
+export const getWeatherForecast = async (fieldID: number): Promise<WeatherForecastData> => {
+    const uri = 'https://us-central1-farmbase-b2f7e.cloudfunctions.net/getForecastWeather'
     const response = await fetch(uri, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            Latitude: lat,
-            Longitude: lng,
+            FieldID: fieldID,
             UID: UID,
         })
     })
@@ -40,7 +39,7 @@ export const getWeatherForecast = async (lat: number, lng: number): Promise<Weat
     return data
 }
 
-const askFarmonautAI = async (fieldID: number, recommendationType: string): Promise<string> => {
+const askFarmonautAI = async (fieldID: number, recommendationType: string): Promise<string[]> => {
     const uri = 'https://us-central1-farmbase-b2f7e.cloudfunctions.net/askJeevnAPI'
     const crop = "grape"
     const response = await fetch(uri, {
@@ -60,13 +59,18 @@ const askFarmonautAI = async (fieldID: number, recommendationType: string): Prom
         throw new Error(`Server (aiFarmAdvisory) error: ${response.status}`);
     }
     const data: string = await response.text()
-    return data
+    console.log("ai response processed", aiResponseToArr(data))
+    return aiResponseToArr(data)
 }
 
-export const diseaseAI = async (fieldID: number): Promise<string> => {
+const aiResponseToArr = (response: string): string[] => {
+    return response.split('\n')
+}
+
+export const diseaseAI = async (fieldID: number): Promise<string[]> => {
     return askFarmonautAI(fieldID, 'pest & disease')
 }
 
-export const irrigationAI = async (fieldID: number): Promise<string> => {
+export const irrigationAI = async (fieldID: number): Promise<string[]> => {
     return askFarmonautAI(fieldID, 'irrigation')
 }
