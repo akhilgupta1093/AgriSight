@@ -15,12 +15,12 @@ export const WeatherForecast = ({ weatherForecastData }: { weatherForecastData: 
             <div className="text-2xl font-semibold ml-4">Weather Forecast</div>
             <div className="flex flex-nowrap overflow-x-auto justify-start items-center">
                 {weatherForecastData.daily.map((day, index) => (
-                <div key={index} className="m-4 p-4 bg-green-50 rounded-lg shadow-md h-[260px] min-w-[240px] flex flex-col gap-3">
+                <div key={index} className="m-4 p-4 bg-green-50 rounded-lg shadow-md h-[250px] min-w-[260px] flex flex-col gap-3">
                     <div className="text-lg font-semibold">
-                        {index == 0 ? "Today" : days[dates[index].getDay()]}, {dates[index].getMonth()}/{dates[index].getDate()}
+                        {index == 0 ? "Today" : days[dates[index].getDay()]}, {dates[index].getMonth() + 1}/{dates[index].getDate()}
                     </div>
                     <div className="flex flex-col gap-1">
-                        {true && <Value label={"Temp"} value={`${day.temp.min}°C - ${day.temp.max}°C`} />}
+                        {true && <Value label={"Temp"} value={`${kelvinToFarhenheit(day.temp.min)}°F - ${kelvinToFarhenheit(day.temp.max)}°F`} />}
                         {day.humidity != null && day.humidity <= 100 && <Value label={"Humidity"} value={`${day.humidity}%`} />}
                         <Value label="Wind speed" value={`${day.wind_speed} m/s`} />
                         <Value label="UV index" value={`${day.uvi}`} />
@@ -33,6 +33,11 @@ export const WeatherForecast = ({ weatherForecastData }: { weatherForecastData: 
         </div>
     );
   };
+
+  const kelvinToFarhenheit = (kelvin: number) => {
+    const f = (kelvin - 273.15) * 9/5 + 32
+    return Math.round(f * 10) / 10
+  }
 
   const Value = ({ label, value }: { label: string, value: string }) => {
     return (

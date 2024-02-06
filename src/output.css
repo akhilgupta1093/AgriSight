@@ -568,6 +568,10 @@ video {
   margin-top: 1.25rem;
 }
 
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
 .flex {
   display: flex;
 }
@@ -650,6 +654,10 @@ video {
 
 .min-w-\[240px\] {
   min-width: 240px;
+}
+
+.min-w-\[260px\] {
+  min-width: 260px;
 }
 
 .max-w-screen-2xl {

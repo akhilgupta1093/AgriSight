@@ -1,7 +1,7 @@
 import {getFarmerData, getWeatherForecast, diseaseAI, irrigationAI} from './api/farmonaut'
 import React, { useEffect, useState } from 'react';
 import { Map } from './components/Map';
-import { FIELD_ID_2 } from './CONSTANTS';
+import { FIELD_ID_2, diseaseRecHardcoded, irrigationRecHardcoded } from './CONSTANTS';
 import { FarmerData, WeatherForecastData } from './api/types';
 import * as Section from './components/Section';
 import * as SubSection from './components/SubSection';
@@ -17,6 +17,15 @@ function App() {
   const [irrigationAdvice, setIrrigationAdvice] = useState<string[]>([]);
   const [irrigationAILoading, setIrrigationAILoading] = useState<boolean>(true);
   const [fieldId, setFieldId] = useState<number>(FIELD_ID_2);
+  const [fakeIsLoading, setFakeIsLoading] = useState<boolean>(true);
+
+  // after 3 seconds, set fakeIsLoading to false
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setFakeIsLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     getFarmerData(fieldId).then((farmResp: FarmerData) => {
@@ -61,7 +70,8 @@ function App() {
                   Disease
                 </SubSection.Header>
                 <SubSection.Body>
-                  <AIResponse loading={diseaseAILoading} advice={diseaseAdvice} />
+                  {/* <AIResponse loading={diseaseAILoading} advice={diseaseAdvice} /> */}
+                  <AIResponse loading={fakeIsLoading} advice={diseaseRecHardcoded} />
                 </SubSection.Body>
               </SubSection.Root>
               <SubSection.Root>
@@ -69,7 +79,8 @@ function App() {
                   Irrigation
                 </SubSection.Header>
                 <SubSection.Body>
-                  <AIResponse loading={irrigationAILoading} advice={irrigationAdvice} />
+                  {/* <AIResponse loading={irrigationAILoading} advice={irrigationAdvice} /> */}
+                  <AIResponse loading={fakeIsLoading} advice={irrigationRecHardcoded} />
                 </SubSection.Body>
               </SubSection.Root>
             </div>
@@ -88,7 +99,7 @@ const AIResponse = ({loading, advice}: {loading: boolean, advice: string[]}) => 
       <div>
         {advice.map((advice, index) => {
           return (
-            <React.Fragment>{advice}{index != advice.length - 1 ? <br /> : null}</React.Fragment>
+            <React.Fragment>{advice}<br />{index != advice.length - 1 ? <br /> : null}</React.Fragment>
           )
         })}
       </div>}
