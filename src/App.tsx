@@ -70,8 +70,8 @@ function App() {
                   Disease
                 </SubSection.Header>
                 <SubSection.Body>
-                  {/* <AIResponse loading={diseaseAILoading} advice={diseaseAdvice} /> */}
-                  <AIResponse loading={fakeIsLoading} advice={diseaseRecHardcoded} />
+                  <AIResponse loading={diseaseAILoading} advice={diseaseAdvice} />
+                  {/* <AIResponse loading={fakeIsLoading} advice={diseaseRecHardcoded} /> */}
                 </SubSection.Body>
               </SubSection.Root>
               <SubSection.Root>
@@ -79,8 +79,8 @@ function App() {
                   Irrigation
                 </SubSection.Header>
                 <SubSection.Body>
-                  {/* <AIResponse loading={irrigationAILoading} advice={irrigationAdvice} /> */}
-                  <AIResponse loading={fakeIsLoading} advice={irrigationRecHardcoded} />
+                  <AIResponse loading={irrigationAILoading} advice={irrigationAdvice} />
+                  {/* <AIResponse loading={fakeIsLoading} advice={irrigationRecHardcoded} /> */}
                 </SubSection.Body>
               </SubSection.Root>
             </div>
