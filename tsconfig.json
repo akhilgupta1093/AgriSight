@@ -8,7 +8,9 @@
     ],
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["*"]
+      "@/*": [
+        "*"
+      ]
     },
     "allowJs": true,
     "skipLibCheck": true,
@@ -22,10 +24,16 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "preserve",
+    "incremental": true
   },
   "include": [
-    "src",
-    "global.d.ts",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "global.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

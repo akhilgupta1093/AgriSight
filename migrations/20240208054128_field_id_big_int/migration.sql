@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "field" ALTER COLUMN "fieldId" SET DATA TYPE BIGINT;
