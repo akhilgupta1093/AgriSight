@@ -1,5 +1,4 @@
 import { getFields, createField, deleteField } from "api/farmonaut";
-import { FIELD_ID_2 } from "@/CONSTANTS";
 import {
   Button,
   CircularProgress,
@@ -8,8 +7,6 @@ import {
   Typography,
 } from "@mui/material";
 import { useState, useEffect } from "react";
-import type { field } from "@prisma/client";
-import { FIELD_ID } from "../../CONSTANTS";
 import { Point } from "@/api/types";
 import { AllFieldData } from "@/api/types";
 import { IconTrash } from "@tabler/icons-react";

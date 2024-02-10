@@ -1,6 +1,8 @@
 import { UID } from "../CONSTANTS";
 import { FieldData, WeatherForecastData, Point } from "./types";
 import { transformPoints } from "./utils";
+import { saveAdvisory } from "../pages/api/saveAdvisory";
+import { getAdvisory } from "../pages/api/getAdvisory";
 
 const CROP_CODE_GRAPE = 24;
 
@@ -115,6 +117,13 @@ const askFarmonautAI = async (
   fieldID: number,
   recommendationType: string
 ): Promise<string[]> => {
+  // See if we have one saved.
+  const advisory = await getAdvisory(recommendationType, fieldID);
+  if (advisory) {
+    return aiResponseToArr(advisory.value);
+  }
+
+  // If not, ask the AI.
   const uri =
     "https://us-central1-farmbase-b2f7e.cloudfunctions.net/askJeevnAPI";
   const crop = "grape";
@@ -136,7 +145,7 @@ const askFarmonautAI = async (
     return ["No data available."];
   }
   const data: string = await response.text();
-  console.log("ai response processed", aiResponseToArr(data));
+  await saveAdvisory(recommendationType, fieldID, data);
   return aiResponseToArr(data);
 };
 
