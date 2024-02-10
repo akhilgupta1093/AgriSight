@@ -1,80 +1,82 @@
 import {
-  getFarmerData,
+  getField,
   getWeatherForecast,
   diseaseAI,
   irrigationAI,
 } from "api/farmonaut";
 import React, { useEffect, useState } from "react";
 import { Map } from "./Map";
-import {
-  FIELD_ID_2,
-  diseaseRecHardcoded,
-  irrigationRecHardcoded,
-} from "CONSTANTS";
-import { FarmerData, WeatherForecastData } from "api/types";
+import { FieldData, WeatherForecastData } from "api/types";
 import * as Section from "./Section";
 import * as SubSection from "./SubSection";
 import { IconSun } from "@tabler/icons-react";
 import { CircularProgress } from "@mui/material";
 import { WeatherForecast } from "./WeatherForecast";
+import { fieldNamePretty } from "api/utils";
 
-export const App = () => {
-  const [data, setData] = useState<FarmerData | null>(null);
+export const App = ({
+  fieldId,
+  fieldName,
+}: {
+  fieldId: number;
+  fieldName: string;
+}) => {
+  const [data, setData] = useState<FieldData | null>(null);
   const [weatherForecast, setWeatherForecast] =
     useState<WeatherForecastData | null>(null);
   const [diseaseAdvice, setDiseaseAdvice] = useState<string[]>([]);
-  const [diseaseAILoading, setDiseaseAILoading] = useState<boolean>(true);
+  const [diseaseAILoading, setDiseaseAILoading] = useState<boolean>(false);
   const [irrigationAdvice, setIrrigationAdvice] = useState<string[]>([]);
-  const [irrigationAILoading, setIrrigationAILoading] = useState<boolean>(true);
-  const [fieldId, setFieldId] = useState<number>(FIELD_ID_2);
-  const [fakeIsLoading, setFakeIsLoading] = useState<boolean>(true);
+  const [irrigationAILoading, setIrrigationAILoading] =
+    useState<boolean>(false);
 
-  // after 3 seconds, set fakeIsLoading to false
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setFakeIsLoading(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
+  const getDiseaseAdvice = async () => {
+    setDiseaseAILoading(true);
+    const resp = await diseaseAI(fieldId);
+    setDiseaseAdvice(resp);
+    setDiseaseAILoading(false);
+  };
+
+  const getIrrigationAdvice = async () => {
+    setIrrigationAILoading(true);
+    const resp = await irrigationAI(fieldId);
+    setIrrigationAdvice(resp);
+    setIrrigationAILoading(false);
+  };
 
   useEffect(() => {
-    getFarmerData(fieldId).then((farmResp: FarmerData) => {
-      console.log("farm resp", farmResp);
+    getField(fieldId).then((farmResp: FieldData) => {
       setData(farmResp);
-      // Get weather forecast.
+      console.log("data", farmResp);
       getWeatherForecast(fieldId).then((weatherResp: WeatherForecastData) => {
-        console.log("weather resp", weatherResp);
         setWeatherForecast(weatherResp);
       });
     });
     if (diseaseAdvice.length == 0) {
-      diseaseAI(fieldId).then((resp) => {
-        setDiseaseAdvice(resp);
-        setDiseaseAILoading(false);
-      });
+      getDiseaseAdvice();
     }
     if (irrigationAdvice.length == 0) {
-      irrigationAI(fieldId).then((resp) => {
-        setIrrigationAdvice(resp);
-        setIrrigationAILoading(false);
-      });
+      getIrrigationAdvice();
     }
   }, []);
 
   return (
     <div className="mx-auto h-full w-full max-w-screen-2xl flex flex-col gap-2 p-5">
       <div className="text-center">
-        <h1 className="text-4xl font-bold">Amulet Farms</h1>
+        <h1 className="text-4xl font-bold">{fieldNamePretty(fieldName)}</h1>
       </div>
       {data ? (
         <div className="flex flex-col gap-3">
-          <Map lat={data.CenterLat} lng={data.CenterLong} zoom={18} />
+          <Map
+            lat={(data.FieldMinLat + data.FieldMaxLat) / 2}
+            lng={(data.FieldMinLong + data.FieldMaxLong) / 2}
+            zoom={18}
+          />
           <div className="grid grid-cols-2 gap-2">
             <SubSection.Root>
               <SubSection.Header>Disease</SubSection.Header>
               <SubSection.Body>
                 <AIResponse loading={diseaseAILoading} advice={diseaseAdvice} />
-                {/* <AIResponse loading={fakeIsLoading} advice={diseaseRecHardcoded} /> */}
               </SubSection.Body>
             </SubSection.Root>
             <SubSection.Root>
@@ -84,7 +86,6 @@ export const App = () => {
                   loading={irrigationAILoading}
                   advice={irrigationAdvice}
                 />
-                {/* <AIResponse loading={fakeIsLoading} advice={irrigationRecHardcoded} /> */}
               </SubSection.Body>
             </SubSection.Root>
           </div>
