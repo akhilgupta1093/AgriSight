@@ -1,45 +1,54 @@
-import React, { useEffect } from 'react'
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
-import { GOOGLE_MAPS_API_KEY } from '../CONSTANTS';
+import React, { useEffect } from "react";
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import { GOOGLE_MAPS_API_KEY } from "CONSTANTS";
 
 const containerStyle = {
-  width: 'w-full',
-  height: '400px'
+  width: "w-full",
+  height: "400px",
 };
 
-export function Map({lat, lng, zoom}: {lat: number, lng: number, zoom: number}) {
-  const [center, setCenter] = React.useState({lat, lng})
+export function Map({
+  lat,
+  lng,
+  zoom,
+}: {
+  lat: number;
+  lng: number;
+  zoom: number;
+}) {
+  const [center, setCenter] = React.useState({ lat, lng });
   useEffect(() => {
-    setCenter({lat, lng})
-  }, [lat, lng])
+    setCenter({ lat, lng });
+  }, [lat, lng]);
 
   const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY
-  })
+    id: "google-map-script",
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+  });
 
-
-  const [map, setMap] = React.useState(null)
+  const [map, setMap] = React.useState(null);
 
   const onLoad = React.useCallback(function callback(map: any) {
-    setMap(map)
-  }, [])
+    setMap(map);
+  }, []);
 
   const onUnmount = React.useCallback(function callback(map: any) {
-    setMap(null)
-  }, [])
+    setMap(null);
+  }, []);
 
   return isLoaded ? (
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={zoom}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
-        mapTypeId='satellite'
-      >
-        { /* Child components, such as markers, info windows, etc. */ }
-        <></>
-      </GoogleMap>
-  ) : <></>
+    <GoogleMap
+      mapContainerStyle={containerStyle}
+      center={center}
+      zoom={zoom}
+      onLoad={onLoad}
+      onUnmount={onUnmount}
+      mapTypeId="satellite"
+    >
+      {/* Child components, such as markers, info windows, etc. */}
+      <></>
+    </GoogleMap>
+  ) : (
+    <></>
+  );
 }
