@@ -9,7 +9,7 @@ import {
 import { useState, useEffect } from "react";
 import { Point } from "@/api/types";
 import { AllFieldData } from "@/api/types";
-import { IconTrash } from "@tabler/icons-react";
+import { IconTrash, IconLink } from "@tabler/icons-react";
 
 const Admin = () => {
   const [fields, setFields] = useState<AllFieldData | null>(null);
@@ -44,16 +44,25 @@ const Admin = () => {
                       <div>Field Id: {value.FieldID}</div>
                       <div>Name: {value.FieldAddress}</div>
                     </div>
-                    <Button
-                      variant="outlined"
-                      onClick={async () => {
-                        setFieldsLoading(true);
-                        await deleteField(value.FieldID);
-                        refreshFields();
-                      }}
-                    >
-                      <IconTrash />
-                    </Button>
+                    <div className="flex gap-3 items-center">
+                      <Button
+                        variant="outlined"
+                        onClick={async () => {
+                          setFieldsLoading(true);
+                          await deleteField(value.FieldID);
+                          refreshFields();
+                        }}
+                      >
+                        <IconTrash />
+                      </Button>
+                      <a
+                        href={`/${value.FieldAddress}`}
+                        target="_blank"
+                        className="pr-3"
+                      >
+                        <IconLink />
+                      </a>
+                    </div>
                   </div>
                 ))}
               </div>
