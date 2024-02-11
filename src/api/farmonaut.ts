@@ -140,11 +140,11 @@ const askFarmonautAI = async (
       UID: UID,
     }),
   });
-  console.log("ai response", await response.text());
   if (!response.ok) {
     return ["No data available."];
   }
   const data: string = await response.text();
+  console.log("ai response", data);
   await saveAdvisory(recommendationType, fieldID, data);
   return aiResponseToArr(data);
 };
