@@ -1,21 +1,20 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "db/prismaClient";
 import { advisory } from "@prisma/client";
+import { customJSONStringify } from "api/utils";
 
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const { recommendationType, fieldId } = req.body;
-  console.log("recommendationType", recommendationType);
-  console.log("fieldId", fieldId);
   const advisory = await prisma.advisory.findFirst({
     where: {
       recommendationType,
       fieldId,
     },
   });
-  res.json(advisory);
+  res.send(customJSONStringify(advisory));
 }
 
 export const getAdvisory = async (
