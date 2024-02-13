@@ -17,6 +17,7 @@ const Admin = () => {
   const [createFieldLoading, setCreateFieldLoading] = useState(false);
   const [fieldName, setFieldName] = useState("");
   const [points, setPoints] = useState<Point[]>([]);
+  const [totalHectares, setTotalHectares] = useState(0);
   useEffect(() => {
     refreshFields();
   }, []);
@@ -28,11 +29,24 @@ const Admin = () => {
     setFieldsLoading(false);
   };
 
+  useEffect(() => {
+    if (fields != null) {
+      setTotalHectares(
+        Array.from(Object.entries(fields).values()).reduce(
+          (accumulator, currentValue) => accumulator + currentValue[1].hUnits,
+          0
+        )
+      );
+    }
+  }, [fields]);
+
   return (
     <div className="p-5 grid col-span-3">
       <div className="grid grid-cols-2">
         <div className="flex flex-col gap-2">
-          <Typography variant="h4">Fields</Typography>
+          <Typography variant="h4">
+            Fields (Total Hectares: {totalHectares})
+          </Typography>
           <div>
             {fieldsLoading || fields == null ? (
               <CircularProgress />
@@ -43,6 +57,7 @@ const Admin = () => {
                     <div key={index} className="flex flex-col p-1 ">
                       <div>Field Id: {value.FieldID}</div>
                       <div>Name: {value.FieldAddress}</div>
+                      <div>Hectares: {value.hUnits}</div>
                     </div>
                     <div className="flex gap-3 items-center">
                       <Button
