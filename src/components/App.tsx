@@ -13,6 +13,7 @@ import { IconSun } from "@tabler/icons-react";
 import { CircularProgress } from "@mui/material";
 import { WeatherForecast } from "./WeatherForecast";
 import { fieldNamePretty } from "api/utils";
+import ReactMarkdown from "react-markdown";
 
 export const App = ({
   fieldId,
@@ -113,15 +114,12 @@ const AIResponse = ({
         <CircularProgress />
       ) : (
         <div>
-          {advice.map((advice, index) => {
-            return (
-              <React.Fragment key={index}>
-                {advice}
-                <br />
-                {index != advice.length - 1 ? <br /> : null}
-              </React.Fragment>
-            );
-          })}
+          {advice.map((pieceOfAdvice, index) => (
+            <React.Fragment key={index}>
+              <ReactMarkdown>{pieceOfAdvice}</ReactMarkdown>
+              {index !== advice.length - 1 && <br />}
+            </React.Fragment>
+          ))}
         </div>
       )}
     </div>
