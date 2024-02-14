@@ -9,11 +9,16 @@ import { Map } from "./Map";
 import { FieldData, WeatherForecastData } from "api/types";
 import * as Section from "./Section";
 import * as SubSection from "./SubSection";
-import { IconSun } from "@tabler/icons-react";
+import {
+  IconAlertTriangle,
+  IconExclamationMark,
+  IconSun,
+} from "@tabler/icons-react";
 import { CircularProgress } from "@mui/material";
 import { WeatherForecast } from "./WeatherForecast";
 import { fieldNamePretty } from "api/utils";
 import ReactMarkdown from "react-markdown";
+import { getHeadline } from "../api/weather";
 
 export const App = ({
   fieldId,
@@ -30,6 +35,7 @@ export const App = ({
   const [irrigationAdvice, setIrrigationAdvice] = useState<string[]>([]);
   const [irrigationAILoading, setIrrigationAILoading] =
     useState<boolean>(false);
+  const [eventHeadline, setEventHeadline] = useState<string>("");
 
   const getDiseaseAdvice = async () => {
     setDiseaseAILoading(true);
@@ -43,6 +49,20 @@ export const App = ({
     const resp = await irrigationAI(fieldId);
     setIrrigationAdvice(resp);
     setIrrigationAILoading(false);
+  };
+
+  const getEventHeadline = async () => {
+    if (data == null) {
+      console.log("data is null");
+      return;
+    }
+    const coordinates: [number, number] = [
+      (data.FieldMinLat + data.FieldMaxLat) / 2,
+      (data.FieldMinLong + data.FieldMaxLong) / 2,
+    ];
+    const headline = await getHeadline(coordinates);
+    console.log("headline", headline);
+    setEventHeadline(headline);
   };
 
   useEffect(() => {
@@ -61,6 +81,10 @@ export const App = ({
     }
   }, []);
 
+  useEffect(() => {
+    getEventHeadline();
+  }, [data]);
+
   return (
     <div className="mx-auto h-full w-full max-w-screen-2xl flex flex-col gap-2 p-5">
       <div className="text-center">
@@ -73,6 +97,17 @@ export const App = ({
             lng={(data.FieldMinLong + data.FieldMaxLong) / 2}
             zoom={18}
           />
+          {eventHeadline != "" && (
+            <Section.Root>
+              <Section.Body className="bg-red-100 flex items-center gap-2">
+                <IconAlertTriangle />
+                <div className="flex items-center gap-1">
+                  <div className="font-bold">Alert:</div>{" "}
+                  <div>{eventHeadline}</div>
+                </div>
+              </Section.Body>
+            </Section.Root>
+          )}
           <div className="grid grid-cols-2 gap-2">
             <SubSection.Root>
               <SubSection.Header>Disease</SubSection.Header>

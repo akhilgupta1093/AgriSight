@@ -147,3 +147,90 @@ export interface FarmonautPoints {
   P_19?: Point;
   P_20?: Point;
 }
+
+export interface AlertData {
+  type: string;
+  features: Alert[];
+}
+
+interface Alert {
+  id: string;
+  type: string;
+  geometry: any;
+  properties: AlertProperties;
+}
+
+interface AlertProperties {
+  "@id": string;
+  "@type": string;
+  id: string;
+  areaDesc: string;
+  geocode: Geocode;
+  affectedZones: string[];
+  references: Reference[];
+  sent: string;
+  effective: string;
+  onset: string;
+  expires: string;
+  ends: string;
+  status: string;
+  messageType: string;
+  category: string;
+  severity: string;
+  certainty: string;
+  urgency: string;
+  event: string;
+  sender: string;
+  senderName: string;
+  headline: string;
+  description: string;
+  instruction: string;
+  response: string;
+  parameters: Parameters;
+}
+
+interface Geocode {
+  SAME: string[];
+  UGC: string[];
+}
+
+interface Reference {
+  "@id": string;
+  identifier: string;
+  sender: string;
+  sent: string;
+}
+
+interface Parameters {
+  AWIPSidentifier: string[];
+  WMOidentifier: string[];
+  NWSheadline: string[];
+  BLOCKCHANNEL: string[];
+  VTEC: string[];
+  eventEndingTime: string[];
+  expiredReferences?: string[];
+}
+
+export interface WeatherZone {
+  id: string;
+  type: string;
+  geometry: {
+    type: string;
+    coordinates: number[][][];
+  };
+  properties: {
+    "@id": string;
+    "@type": string;
+    id: string;
+    type: string;
+    name: string;
+    effectiveDate: string;
+    expirationDate: string;
+    state: string;
+    cwa: string[];
+    forecastOffices: string[];
+    timeZone: string[];
+    observationStations: string[];
+    radarStation: string | null;
+  };
+}
