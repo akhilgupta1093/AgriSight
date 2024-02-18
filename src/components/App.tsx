@@ -60,9 +60,9 @@ export const App = ({
       (data.FieldMinLat + data.FieldMaxLat) / 2,
       (data.FieldMinLong + data.FieldMaxLong) / 2,
     ];
-    const headline = await getHeadline(coordinates);
-    console.log("headline", headline);
-    setEventHeadline(headline);
+    // const headline = await getHeadline(coordinates);
+    // console.log("headline", headline);
+    // setEventHeadline(headline);
   };
 
   useEffect(() => {
