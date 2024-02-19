@@ -73,7 +73,7 @@ const Admin = () => {
                       <a
                         href={`/${value.FieldAddress}`}
                         target="_blank"
-                        className="pr-3"
+                        className="pr-3" rel="noreferrer"
                       >
                         <IconLink />
                       </a>

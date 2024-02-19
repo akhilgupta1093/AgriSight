@@ -12,11 +12,6 @@ const FieldPage = () => {
   const [fieldName, setFieldName] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    setFieldName(fieldNameQuery as string);
-    _getFields();
-  }, [fieldNameQuery]);
-
   const _getFields = async () => {
     setIsLoading(true);
     const fieldsResp: AllFieldData = await getFields();
@@ -28,6 +23,11 @@ const FieldPage = () => {
     }
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    setFieldName(fieldNameQuery as string);
+    _getFields();
+  }, [fieldNameQuery]);
 
   if (isLoading) {
     return (

@@ -1,25 +1,14 @@
-import {
-  getField,
-  getWeatherForecast,
-  diseaseAI,
-  irrigationAI,
-} from "api/farmonaut";
-import React, { useEffect, useState } from "react";
+import { getField } from "api/farmonaut";
+import React, { useCallback, useEffect, useState } from "react";
 import { Map } from "./Map";
-import { FieldData, WeatherForecastData } from "api/types";
-import * as Section from "./Section";
-import * as SubSection from "./SubSection";
-import {
-  IconAlertTriangle,
-  IconExclamationMark,
-  IconSun,
-} from "@tabler/icons-react";
-import { CircularProgress } from "@mui/material";
-import { WeatherForecast } from "./WeatherForecast";
+import { FieldData, OpenWeatherMapResponse } from "api/types";
+import { RobotResponse } from "@/openai/utils";
+import { DailyRec, Rec } from "./DailyRec";
+import { format } from "date-fns";
+import { getOpenWeatherMapData } from "api/openweathermap";
 import { fieldNamePretty } from "api/utils";
-import ReactMarkdown from "react-markdown";
-import { getHeadline } from "../api/weather";
-
+import { CircularProgress } from "@mui/material";
+import { handleRobotRec } from "@/pages/api/openai";
 export const App = ({
   fieldId,
   fieldName,
@@ -28,134 +17,98 @@ export const App = ({
   fieldName: string;
 }) => {
   const [data, setData] = useState<FieldData | null>(null);
+  const [customRec, setCustomRec] = useState<RobotResponse | null>(null);
   const [weatherForecast, setWeatherForecast] =
-    useState<WeatherForecastData | null>(null);
-  const [diseaseAdvice, setDiseaseAdvice] = useState<string[]>([]);
-  const [diseaseAILoading, setDiseaseAILoading] = useState<boolean>(false);
-  const [irrigationAdvice, setIrrigationAdvice] = useState<string[]>([]);
-  const [irrigationAILoading, setIrrigationAILoading] =
-    useState<boolean>(false);
-  const [eventHeadline, setEventHeadline] = useState<string>("");
+    useState<OpenWeatherMapResponse | null>(null);
+  const [fieldLoading, setFieldLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const getDiseaseAdvice = async () => {
-    setDiseaseAILoading(true);
-    const resp = await diseaseAI(fieldId);
-    setDiseaseAdvice(resp);
-    setDiseaseAILoading(false);
-  };
-
-  const getIrrigationAdvice = async () => {
-    setIrrigationAILoading(true);
-    const resp = await irrigationAI(fieldId);
-    setIrrigationAdvice(resp);
-    setIrrigationAILoading(false);
-  };
-
-  const getEventHeadline = async () => {
-    if (data == null) {
-      console.log("data is null");
+  const getRobotRec = useCallback(async () => {
+    console.log("data", data);
+    console.log("weatherForecast", weatherForecast);
+    if (data == null || weatherForecast == null) {
+      console.log("data or weatherForecast is null");
       return;
     }
     const coordinates: [number, number] = [
       (data.FieldMinLat + data.FieldMaxLat) / 2,
       (data.FieldMinLong + data.FieldMaxLong) / 2,
     ];
-    // const headline = await getHeadline(coordinates);
-    // console.log("headline", headline);
-    // setEventHeadline(headline);
-  };
+    setLoading(true);
+    const rec = await handleRobotRec(
+      coordinates[0].toString(),
+      coordinates[1].toString(),
+      weatherForecast
+    );
+    console.log("rec", rec);
+    setCustomRec(rec);
+    setLoading(false);
+  }, [data, weatherForecast]);
 
   useEffect(() => {
+    setFieldLoading(true);
     getField(fieldId).then((farmResp: FieldData) => {
       setData(farmResp);
+      setFieldLoading(false);
       console.log("data", farmResp);
-      getWeatherForecast(fieldId).then((weatherResp: WeatherForecastData) => {
-        setWeatherForecast(weatherResp);
-      });
+      setLoading(true);
+      getOpenWeatherMapData(farmResp.CenterLat, farmResp.CenterLong).then(
+        (weatherResp) => {
+          console.log("open weather map resp", weatherResp);
+          setWeatherForecast(weatherResp);
+          getRobotRec();
+          setLoading(false);
+        }
+      );
     });
-    if (diseaseAdvice.length == 0) {
-      getDiseaseAdvice();
-    }
-    if (irrigationAdvice.length == 0) {
-      getIrrigationAdvice();
-    }
-  }, []);
+  }, [fieldId]);
 
   useEffect(() => {
-    getEventHeadline();
-  }, [data]);
+    if (data != null && weatherForecast != null && customRec == null) {
+      getRobotRec();
+    }
+  }, [data, weatherForecast, customRec, getRobotRec]);
 
+  const today = new Date();
   return (
     <div className="mx-auto h-full w-full max-w-screen-2xl flex flex-col gap-2 p-5">
-      <div className="text-center">
+      <div>
         <h1 className="text-4xl font-bold">{fieldNamePretty(fieldName)}</h1>
       </div>
       {data ? (
         <div className="flex flex-col gap-3">
-          <Map
-            lat={(data.FieldMinLat + data.FieldMaxLat) / 2}
-            lng={(data.FieldMinLong + data.FieldMaxLong) / 2}
-            zoom={18}
-          />
-          {eventHeadline != "" && (
-            <Section.Root>
-              <Section.Body className="bg-red-100 flex items-center gap-2">
-                <IconAlertTriangle />
-                <div className="flex items-center gap-1">
-                  <div className="font-bold">Alert:</div>{" "}
-                  <div>{eventHeadline}</div>
-                </div>
-              </Section.Body>
-            </Section.Root>
-          )}
           <div className="grid grid-cols-2 gap-2">
-            <SubSection.Root>
-              <SubSection.Header>Disease</SubSection.Header>
-              <SubSection.Body>
-                <AIResponse loading={diseaseAILoading} advice={diseaseAdvice} />
-              </SubSection.Body>
-            </SubSection.Root>
-            <SubSection.Root>
-              <SubSection.Header>Irrigation</SubSection.Header>
-              <SubSection.Body>
-                <AIResponse
-                  loading={irrigationAILoading}
-                  advice={irrigationAdvice}
-                />
-              </SubSection.Body>
-            </SubSection.Root>
+            {fieldLoading ? (
+              <CircularProgress className="self-center" />
+            ) : (
+              <Map
+                lat={(data.FieldMinLat + data.FieldMaxLat) / 2}
+                lng={(data.FieldMinLong + data.FieldMaxLong) / 2}
+                zoom={18}
+              />
+            )}
+            {loading ? (
+              <CircularProgress className="self-center justify-self-center" />
+            ) : customRec != null && weatherForecast?.daily != null ? (
+              <Rec
+                customRec={customRec}
+                day="date1"
+                weather={weatherForecast.daily[0]}
+                alerts={weatherForecast.alerts}
+                dateString={`Today, ${format(today, "MMM d")}`}
+                longRec={true}
+                className="h-full"
+              />
+            ) : (
+              <CircularProgress />
+            )}
           </div>
-          {weatherForecast != null && (
-            <WeatherForecast weatherForecastData={weatherForecast} />
+          {customRec != null && weatherForecast != null && (
+            <DailyRec customRec={customRec} weatherForecast={weatherForecast} />
           )}
         </div>
       ) : (
-        <div>Loading...</div>
-      )}
-    </div>
-  );
-};
-
-const AIResponse = ({
-  loading,
-  advice,
-}: {
-  loading: boolean;
-  advice: string[];
-}) => {
-  return (
-    <div>
-      {loading ? (
         <CircularProgress />
-      ) : (
-        <div>
-          {advice.map((pieceOfAdvice, index) => (
-            <React.Fragment key={index}>
-              <ReactMarkdown>{pieceOfAdvice}</ReactMarkdown>
-              {index !== advice.length - 1 && <br />}
-            </React.Fragment>
-          ))}
-        </div>
       )}
     </div>
   );

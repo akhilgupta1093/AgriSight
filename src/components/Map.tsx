@@ -4,7 +4,8 @@ import { GOOGLE_MAPS_API_KEY } from "CONSTANTS";
 
 const containerStyle = {
   width: "w-full",
-  height: "400px",
+  height: "h-full",
+  minHeight: "400px",
 };
 
 export function Map({

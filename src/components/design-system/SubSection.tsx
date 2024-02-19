@@ -1,15 +1,15 @@
-import { forwardRef } from "react"
+import { forwardRef } from "react";
 
-import { twMerge } from "tailwind-merge"
+import { twMerge } from "tailwind-merge";
 
-import * as Section from "./Section"
+import * as Section from "./Section";
 
 export interface BaseSectionProps extends React.HTMLAttributes<HTMLDivElement> {
-  className?: string
-  children: React.ReactNode
+  className?: string;
+  children: React.ReactNode;
 }
 
-export const Root = Section.Root
+export const Root = Section.Root;
 
 export const Header = forwardRef(function Header(
   {
@@ -18,18 +18,23 @@ export const Header = forwardRef(function Header(
     bg = "haze",
     ...props
   }: BaseSectionProps & { bg?: "white" | "haze" },
-  ref: React.Ref<HTMLDivElement>,
+  ref: React.Ref<HTMLDivElement>
 ) {
   return (
-    <Section.Header ref={ref} className={twMerge("p-5 bg-green-50", className)} bg={bg} {...props}>
+    <Section.Header
+      ref={ref}
+      className={twMerge("p-5 bg-green-50", className)}
+      bg={bg}
+      {...props}
+    >
       {children}
     </Section.Header>
-  )
-})
+  );
+});
 
 export const Title = forwardRef(function Title(
   { className, children, ...props }: any,
-  ref: React.Ref<HTMLHeadingElement>,
+  ref: React.Ref<HTMLHeadingElement>
 ) {
   return (
     <div
@@ -39,12 +44,12 @@ export const Title = forwardRef(function Title(
     >
       {children}
     </div>
-  )
-})
+  );
+});
 
 export const Subtitle = forwardRef(function Subtitle(
   { className, children, ...props }: any,
-  ref: React.Ref<HTMLHeadingElement>,
+  ref: React.Ref<HTMLHeadingElement>
 ) {
   return (
     <div
@@ -54,18 +59,22 @@ export const Subtitle = forwardRef(function Subtitle(
     >
       {children}
     </div>
-  )
-})
+  );
+});
 
 export const Body = forwardRef(function Body(
   { className, children, ...props }: BaseSectionProps,
-  ref: React.Ref<HTMLDivElement>,
+  ref: React.Ref<HTMLDivElement>
 ) {
   return (
-    <Section.Body ref={ref} className={twMerge("bg-transparent", className)} {...props}>
+    <Section.Body
+      ref={ref}
+      className={twMerge("bg-transparent", className)}
+      {...props}
+    >
       {children}
     </Section.Body>
-  )
-})
+  );
+});
 
-export const Actions = Section.Actions
+export const Actions = Section.Actions;
