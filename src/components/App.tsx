@@ -1,13 +1,12 @@
 import { getField } from "api/farmonaut";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Map } from "./Map";
 import { FieldData, OpenWeatherMapResponse } from "api/types";
 import { RobotResponse } from "@/openai/utils";
 import { DailyRec, Rec } from "./DailyRec";
-import { format, set } from "date-fns";
+import { format } from "date-fns";
 import { getOpenWeatherMapData } from "api/openweathermap";
 import { fieldNamePretty } from "api/utils";
-import { robotRec } from "@/openai/openai";
 import { CircularProgress } from "@mui/material";
 import { handleRobotRec } from "@/pages/api/openai";
 export const App = ({
@@ -24,7 +23,7 @@ export const App = ({
   const [fieldLoading, setFieldLoading] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const getRobotRec = async () => {
+  const getRobotRec = useCallback(async () => {
     console.log("data", data);
     console.log("weatherForecast", weatherForecast);
     if (data == null || weatherForecast == null) {
@@ -44,7 +43,7 @@ export const App = ({
     console.log("rec", rec);
     setCustomRec(rec);
     setLoading(false);
-  };
+  }, [data, weatherForecast]);
 
   useEffect(() => {
     setFieldLoading(true);
@@ -62,13 +61,13 @@ export const App = ({
         }
       );
     });
-  }, []);
+  }, [fieldId]);
 
   useEffect(() => {
     if (data != null && weatherForecast != null && customRec == null) {
       getRobotRec();
     }
-  }, [data, weatherForecast]);
+  }, [data, weatherForecast, customRec, getRobotRec]);
 
   const today = new Date();
   return (

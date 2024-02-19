@@ -15,7 +15,6 @@ import {
   IconTemperature,
   IconInfoCircle,
   IconSunLow,
-  IconHourglass,
   IconPlant,
 } from "@tabler/icons-react";
 import { TablerIconsProps } from "@tabler/icons-react";
@@ -48,7 +47,7 @@ export const DailyRec = ({
     <div>
       <div className="grid grid-cols-4 gap-2">
         {Object.keys(customRec).map((day, i) => {
-          if (i == 0) return;
+          if (i === 0) return;
           if (i > MAX_DAYS - 1) return;
           return (
             <Rec

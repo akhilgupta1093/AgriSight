@@ -8,9 +8,7 @@ export default async function handle(
   res: NextApiResponse
 ) {
   const { lat, lng, weather } = req.body;
-  console.log("handle inputs", lat, lng, weather);
   const rec = await robotRec(lat, lng, weather);
-  console.log("intermediary rec", rec);
   res.send(rec);
 }
 

@@ -39,7 +39,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "./node_modules/.bin/eslint --fix src"
   },
   "eslintConfig": {
     "extends": [
