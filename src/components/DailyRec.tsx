@@ -34,7 +34,7 @@ export const DailyRec = ({
   }
 
   const today = new Date();
-  let dates = [];
+  let dates: Date[] = [];
   for (let i = 0; i < weatherForecast.daily.length; i++) {
     let newDate = new Date(
       today.getFullYear(),
