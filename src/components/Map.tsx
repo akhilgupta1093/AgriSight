@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { GOOGLE_MAPS_API_KEY } from "CONSTANTS";
+import { min } from "date-fns";
 
 const containerStyle = {
   width: "w-full",
-  height: "400px",
+  height: "h-full",
+  minHeight: "400px",
 };
 
 export function Map({
