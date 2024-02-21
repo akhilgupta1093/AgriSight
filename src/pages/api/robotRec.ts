@@ -50,6 +50,14 @@ export const handleRobotRec = async (
       body: JSON.stringify({ lat, lng, weather }),
     });
 
+    if (response.status === 504) {
+      console.log(
+        `Received 504 Gateway Timeout, retrying in ${delayDuration}ms...`
+      );
+      await delay(delayDuration);
+      attempt++;
+      continue;
+    }
     if (!response.ok) {
       throw new Error(`Error: ${response.statusText}`);
     }
