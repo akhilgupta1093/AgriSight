@@ -2,13 +2,16 @@ import { getField } from "api/farmonaut";
 import React, { useCallback, useEffect, useState } from "react";
 import { Map } from "./Map";
 import { FieldData, OpenWeatherMapResponse } from "api/types";
-import { RobotResponse } from "@/openai/utils";
+import { RobotResponse } from "@/openai/robotRec";
 import { DailyRec, Rec } from "./DailyRec";
 import { format } from "date-fns";
 import { getOpenWeatherMapData } from "api/openweathermap";
 import { fieldNamePretty } from "api/utils";
-import { CircularProgress } from "@mui/material";
-import { handleRobotRec } from "@/pages/api/openai";
+import { Button, CircularProgress, Input } from "@mui/material";
+import { handleRobotRec } from "@/pages/api/robotRec";
+import FileUpload from "./design-system/FileUpload";
+import { handleRobotDiseaseDetection } from "@/pages/api/robotDiseaseDetection";
+
 export const App = ({
   fieldId,
   fieldName,
@@ -16,12 +19,14 @@ export const App = ({
   fieldId: number;
   fieldName: string;
 }) => {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [data, setData] = useState<FieldData | null>(null);
   const [customRec, setCustomRec] = useState<RobotResponse | null>(null);
   const [weatherForecast, setWeatherForecast] =
     useState<OpenWeatherMapResponse | null>(null);
   const [fieldLoading, setFieldLoading] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [diagnosis, setDiagnosis] = useState<string | null>(null);
 
   const getRobotRec = useCallback(async () => {
     console.log("data", data);
@@ -68,6 +73,14 @@ export const App = ({
       getRobotRec();
     }
   }, [data, weatherForecast, customRec, getRobotRec]);
+
+  const doVisionThing = async () => {
+    if (selectedFile == null) {
+      return;
+    }
+    const resp = await handleRobotDiseaseDetection(selectedFile);
+    setDiagnosis(resp);
+  };
 
   const today = new Date();
   return (

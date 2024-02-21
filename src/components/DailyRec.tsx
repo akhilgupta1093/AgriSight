@@ -1,4 +1,4 @@
-import { RobotResponse } from "@/openai/utils";
+import { RobotResponse } from "@/openai/robotRec";
 import * as SubSection from "./design-system/SubSection";
 import {
   OpenWeatherMapDataPoint,

@@ -4,10 +4,13 @@ import { App } from "components/App";
 import { AllFieldData } from "api/types";
 import { getFields } from "@/api/farmonaut";
 import { CircularProgress } from "@mui/material";
+import { useFieldName } from "@/components/FieldNameContext";
 
 const FieldPage = () => {
   const router = useRouter();
   const { fieldName: fieldNameQuery } = router.query; // Access the URL parameter
+  const { setFieldName: setFieldNameContext } = useFieldName();
+  setFieldNameContext(fieldNameQuery as string);
   const [fieldId, setFieldId] = useState<number | null>(null);
   const [fieldName, setFieldName] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
