@@ -7,10 +7,8 @@ import { DailyRec, Rec } from "./DailyRec";
 import { format } from "date-fns";
 import { getOpenWeatherMapData } from "api/openweathermap";
 import { fieldNamePretty } from "api/utils";
-import { Button, CircularProgress, Input } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import { handleRobotRec } from "@/pages/api/robotRec";
-import FileUpload from "./design-system/FileUpload";
-import { handleRobotDiseaseDetection } from "@/pages/api/robotDiseaseDetection";
 
 export const App = ({
   fieldId,
@@ -19,18 +17,14 @@ export const App = ({
   fieldId: number;
   fieldName: string;
 }) => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [data, setData] = useState<FieldData | null>(null);
   const [customRec, setCustomRec] = useState<RobotResponse | null>(null);
   const [weatherForecast, setWeatherForecast] =
     useState<OpenWeatherMapResponse | null>(null);
   const [fieldLoading, setFieldLoading] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [diagnosis, setDiagnosis] = useState<string | null>(null);
 
   const getRobotRec = useCallback(async () => {
-    console.log("data", data);
-    console.log("weatherForecast", weatherForecast);
     if (data == null || weatherForecast == null) {
       console.log("data or weatherForecast is null");
       return;
@@ -45,7 +39,6 @@ export const App = ({
       coordinates[1].toString(),
       weatherForecast
     );
-    console.log("rec", rec);
     setCustomRec(rec);
     setLoading(false);
   }, [data, weatherForecast]);
@@ -55,11 +48,9 @@ export const App = ({
     getField(fieldId).then((farmResp: FieldData) => {
       setData(farmResp);
       setFieldLoading(false);
-      console.log("data", farmResp);
       setLoading(true);
       getOpenWeatherMapData(farmResp.CenterLat, farmResp.CenterLong).then(
         (weatherResp) => {
-          console.log("open weather map resp", weatherResp);
           setWeatherForecast(weatherResp);
           getRobotRec();
           setLoading(false);
@@ -73,14 +64,6 @@ export const App = ({
       getRobotRec();
     }
   }, [data, weatherForecast, customRec, getRobotRec]);
-
-  const doVisionThing = async () => {
-    if (selectedFile == null) {
-      return;
-    }
-    const resp = await handleRobotDiseaseDetection(selectedFile);
-    setDiagnosis(resp);
-  };
 
   const today = new Date();
   return (

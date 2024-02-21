@@ -219,7 +219,6 @@ export const getRobotRec = async (
       },
     },
   };
-  console.log(process.env.OPENAI_API_KEY);
   const openai = new OpenAI();
   const completion = await openai.chat.completions.create({
     messages: [

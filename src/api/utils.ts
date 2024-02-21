@@ -21,3 +21,6 @@ export const customJSONStringify = (data: any) => {
     typeof value === "bigint" ? value.toString() : value
   );
 };
+
+export const delay = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
