@@ -20,10 +20,16 @@ const Detect = () => {
 
   return (
     <div className="p-10 flex-col gap-10 items-center justify-center justify-items-center">
-      <div className="flex flex-col gap-10 justify-center items-center mt-20">
-        <div className="flex gap-1 items-center">
-          <h2 className="text-3xl self-center">Disease detection </h2>
-          <Chip label="beta" color="primary" size="small" />
+      <div className="flex flex-col gap-10 justify-center items-center mt-5">
+        <div className="flex flex-col gap-1 items-center">
+          <div className="flex gap-2 items-center">
+            <h2 className="text-3xl self-center">Disease detection </h2>
+            <Chip label="beta" color="primary" size="small" />
+          </div>
+          <div>
+            Upload a picture of a grape leaf from your vineyard, and we will
+            diagnose it.
+          </div>
         </div>
         <FileUpload
           selectedFile={selectedFile}

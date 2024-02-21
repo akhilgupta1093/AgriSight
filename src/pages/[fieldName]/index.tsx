@@ -28,8 +28,10 @@ const FieldPage = () => {
   };
 
   useEffect(() => {
-    setFieldName(fieldNameQuery as string);
-    _getFields();
+    if (fieldNameQuery) {
+      setFieldName(fieldNameQuery as string);
+      _getFields();
+    }
   }, [fieldNameQuery]);
 
   if (isLoading) {
@@ -42,10 +44,8 @@ const FieldPage = () => {
 
   return (
     <div>
-      {fieldName != null && fieldId != null ? (
+      {fieldName != null && fieldId != null && (
         <App fieldId={fieldId} fieldName={fieldName} />
-      ) : (
-        <div>{fieldNameQuery} Not Found</div>
       )}
     </div>
   );

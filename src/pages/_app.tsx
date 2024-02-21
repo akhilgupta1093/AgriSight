@@ -1,6 +1,5 @@
 import { AppProps } from "next/app";
 import "globals.css";
-import { useContext } from "react";
 import Link from "next/link";
 import { FieldNameProvider, useFieldName } from "@/components/FieldNameContext";
 
@@ -25,14 +24,16 @@ const Bar = () => {
         <img src="/leaf.ico" alt="logo" className="h-10 w-10" />
         <h1 className="text-4xl">GrowSight</h1>
       </div>
-      <div className="flex gap-4">
-        <Link href={`/${fieldName}`}>
-          <div className="text-blue-600 hover:text-blue-800">Home</div>
-        </Link>
-        <Link href={`/${fieldName}/detect`}>
-          <div className="text-blue-600 hover:text-blue-800">Detect</div>
-        </Link>
-      </div>
+      {fieldName != null && fieldName !== "" && (
+        <div className="flex gap-4">
+          <Link href={`/${fieldName}`}>
+            <div className="text-blue-600 hover:text-blue-800">Home</div>
+          </Link>
+          <Link href={`/${fieldName}/detect`}>
+            <div className="text-blue-600 hover:text-blue-800">Detect</div>
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

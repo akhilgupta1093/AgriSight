@@ -3,11 +3,9 @@ import React, { useState, DragEvent, ChangeEvent } from "react";
 const FileUpload = ({
   selectedFile,
   setSelectedFile,
-  className,
 }: {
   selectedFile: File | null;
   setSelectedFile: (file: File | null) => void;
-  className?: string;
 }) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isHovering, setIsHovering] = useState<boolean>(false); // State to track hover status
@@ -36,17 +34,17 @@ const FileUpload = ({
   };
 
   return (
-    <div className={className}>
+    <div className="sm:h-[300px] sm:w-[300px] md:h-[400px] md:w-[400px]">
       <label
         htmlFor="fileInput"
-        className="text-center mt-2 cursor-pointer relative h-full"
+        className="text-center mt-2 cursor-pointer relative"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
         <div
           onDrop={handleDrop}
           onDragOver={handleDragOver}
-          className="border-2 border-dashed border-gray-300 p-5 text-center text-gray-600 relative h-full"
+          className="border-2 border-dashed border-gray-300 p-5 text-center text-gray-600 relative h-full flex items-center justify-center"
         >
           {previewUrl ? (
             <>
