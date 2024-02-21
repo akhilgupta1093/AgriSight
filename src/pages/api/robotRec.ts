@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { robotRec } from "@/openai/openai";
 import { OpenWeatherMapResponse } from "@/api/types";
-import { RobotResponse } from "@/openai/utils";
+import { RobotResponse } from "@/openai/robotRec";
 
 export default async function handle(
   req: NextApiRequest,
@@ -17,7 +17,7 @@ export const handleRobotRec = async (
   lng: string,
   weather: OpenWeatherMapResponse
 ): Promise<RobotResponse> => {
-  const response = await fetch("/api/openai", {
+  const response = await fetch("/api/robotRec", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
