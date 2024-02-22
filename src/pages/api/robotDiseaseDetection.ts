@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { robotDiseaseDetection } from "@/openai/openai";
 
 export const maxDuration = 60;
+export const dynamic = "force-dynamic";
 
 export default async function handle(
   req: NextApiRequest,
