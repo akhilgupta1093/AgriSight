@@ -4,6 +4,8 @@ import { OpenWeatherMapResponse } from "@/api/types";
 import { RobotResponse } from "@/openai/robotRec";
 import { delay } from "@/api/utils";
 
+export const maxDuration = 60;
+
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
