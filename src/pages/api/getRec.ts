@@ -36,7 +36,7 @@ export const getRec = async (
   date: Date
 ): Promise<rec | null> => {
   try {
-    const response = await fetcher("/api/getRec", {
+    const response = await fetch("/api/getRec", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
