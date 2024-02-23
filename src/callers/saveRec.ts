@@ -1,10 +1,12 @@
+import { fetcher } from "@/api/utils";
+
 export const saveRec = async (
   rec: string,
   lat: number,
   lng: number
 ): Promise<void> => {
   try {
-    const response = await fetch("/api/saveRec", {
+    const response = await fetcher("/api/saveRec", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -1,3 +1,4 @@
+import { fetcher } from "@/api/utils";
 import { rec } from "@prisma/client";
 
 export const getRec = async (
@@ -6,7 +7,7 @@ export const getRec = async (
   date: Date
 ): Promise<rec | null> => {
   try {
-    const response = await fetch("/api/getRec", {
+    const response = await fetcher("/api/getRec", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
