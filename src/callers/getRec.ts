@@ -6,6 +6,11 @@ export const getRec = async (
   lng: number,
   date: Date
 ): Promise<rec | null> => {
+  console.log(
+    "environment variables",
+    process.env.NEXT_PUBLIC_API_URL,
+    process.env.VERCEL_URL
+  );
   try {
     const response = await fetcher("/api/getRec", {
       method: "POST",

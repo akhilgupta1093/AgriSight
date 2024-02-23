@@ -27,7 +27,7 @@ export const handleRobotRec = async (
   let attempt = 0;
 
   while (attempt < retries) {
-    const response = await fetcher("/api/robotRec", {
+    const response = await fetch("/api/robotRec", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

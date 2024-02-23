@@ -15,7 +15,7 @@ export const handleRobotDiseaseDetection = async (
   file: File
 ): Promise<string> => {
   const image = await convertFileToBase64(file);
-  const response = await fetcher("/api/robotDiseaseDetection", {
+  const response = await fetch("/api/robotDiseaseDetection", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
