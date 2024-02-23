@@ -29,31 +29,3 @@ export default async function handle(
   console.log("recommendation", recommendation);
   res.json(recommendation);
 }
-
-export const getRec = async (
-  lat: number,
-  lng: number,
-  date: Date
-): Promise<rec | null> => {
-  try {
-    const response = await fetch("/api/getRec", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        lat,
-        lng,
-        date,
-      }),
-    });
-    if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`);
-    }
-    const result: rec = await response.json();
-    return result;
-  } catch (error) {
-    console.log("Failed to get rec", error);
-    return null;
-  }
-};

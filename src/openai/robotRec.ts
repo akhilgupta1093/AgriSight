@@ -1,6 +1,6 @@
 import OpenAI from "openai";
-import { saveRec } from "@/pages/api/saveRec";
-import { getRec } from "@/pages/api/getRec";
+import { saveRec } from "@/callers/saveRec";
+import { getRec } from "@/callers/getRec";
 
 export interface RobotResponse {
   [day: string]: {

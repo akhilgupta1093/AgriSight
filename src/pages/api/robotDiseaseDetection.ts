@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { robotDiseaseDetection } from "@/openai/openai";
+import { fetcher } from "@/api/utils";
 
 export default async function handle(
   req: NextApiRequest,
@@ -14,7 +15,7 @@ export const handleRobotDiseaseDetection = async (
   file: File
 ): Promise<string> => {
   const image = await convertFileToBase64(file);
-  const response = await fetch("/api/robotDiseaseDetection", {
+  const response = await fetcher("/api/robotDiseaseDetection", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
