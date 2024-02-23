@@ -24,3 +24,15 @@ export const customJSONStringify = (data: any) => {
 
 export const delay = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
+
+export const fetcher = async (
+  relative_url: string,
+  options: RequestInit
+): Promise<any> => {
+  const url = process.env.VERCEL_URL;
+  const protocol =
+    process.env.VERCEL_URL && process.env.VERCEL_URL.includes("localhost")
+      ? "http://"
+      : "https://";
+  return await fetch(`${protocol}${url}${relative_url}`, options);
+};

@@ -1,8 +1,5 @@
 {
     "functions": {
-      "pages/api/**/*": {
-        "maxDuration": 30
-      },
       "src/pages/api/**/*": {
         "maxDuration": 30
       }

@@ -1,4 +1,6 @@
 import OpenAI from "openai";
+import { saveRec } from "@/pages/api/saveRec";
+import { getRec } from "@/pages/api/getRec";
 
 export interface RobotResponse {
   [day: string]: {
@@ -15,10 +17,17 @@ export interface RobotResponse {
 }
 
 export const getRobotRec = async (
-  lat: string,
-  lng: string,
+  lat: number,
+  lng: number,
   weather: string
 ): Promise<RobotResponse> => {
+  const existingRec = await getRec(lat, lng, new Date());
+  console.log("Existing rec", existingRec);
+  if (existingRec != null) {
+    console.log("Using existing recommendation");
+    const parsed: RobotResponse = JSON.parse(existingRec.rec);
+    return parsed;
+  }
   const schema = {
     type: "object",
     properties: {
@@ -232,7 +241,7 @@ export const getRobotRec = async (
         content: basePrompt(lat, lng, weather),
       },
     ],
-    model: "gpt-3.5-turbo",
+    model: "gpt-4",
     functions: [{ name: "get_farm_recommendation", parameters: schema }],
     function_call: { name: "get_farm_recommendation" },
   });
@@ -242,10 +251,43 @@ export const getRobotRec = async (
     throw new Error("No response from the robot");
   }
   const parsed: RobotResponse = JSON.parse(resp);
+  checkAndSave(parsed, lat, lng);
   return parsed;
 };
 
-const basePrompt = (lat: string, lng: string, weather: string): string => {
+const checkAndSave = async (resp: RobotResponse, lat: number, lng: number) => {
+  // Check if all fields in the response are present. If so, save to db.
+  const allThere = check(resp);
+  const existingRec = await getRec(lat, lng, new Date());
+  if (allThere && existingRec == null) {
+    console.log("Got a good response. Saving to db.");
+    const recStr = JSON.stringify(resp);
+    saveRec(recStr, lat, lng);
+  }
+};
+
+const check = (resp: RobotResponse): boolean => {
+  let allThere = true;
+  const days = ["date1", "date2", "date3", "date4", "date5"];
+  for (const day of days) {
+    const dayObj = resp[day];
+    if (
+      !dayObj.irrigation ||
+      !dayObj.irrigationShort ||
+      !dayObj.disease ||
+      !dayObj.diseaseShort ||
+      !dayObj.work.numTasks ||
+      !dayObj.work.numHours ||
+      !dayObj.work.tasks
+    ) {
+      allThere = false;
+      break;
+    }
+  }
+  return allThere;
+};
+
+const basePrompt = (lat: number, lng: number, weather: string): string => {
   const today = new Date();
   return `I need irrigation and pest & disease advice for the next five days for a grape farm located in Latitude: ${lat}, Longitude: ${lng} with the following details:
     - Weather Forecast: ${weather}
