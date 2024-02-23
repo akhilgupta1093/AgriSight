@@ -8,33 +8,18 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { lat, lng, weather } = req.body;
+  const {
+    lat,
+    lng,
+    weather,
+  }: { lat: number; lng: number; weather: OpenWeatherMapResponse } = req.body;
   const rec = await robotRec(lat, lng, weather);
   res.send(rec);
 }
 
-export const handleRobotRecDepr = async (
-  lat: string,
-  lng: string,
-  weather: OpenWeatherMapResponse
-): Promise<RobotResponse> => {
-  const response = await fetch("/api/robotRec", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ lat, lng, weather }),
-  });
-  if (!response.ok) {
-    throw new Error(`Error: ${response.statusText}`);
-  }
-  const result: RobotResponse = await response.json();
-  return result;
-};
-
 export const handleRobotRec = async (
-  lat: string,
-  lng: string,
+  lat: number,
+  lng: number,
   weather: OpenWeatherMapResponse,
   retries = 5,
   delayDuration = 1000
@@ -50,14 +35,6 @@ export const handleRobotRec = async (
       body: JSON.stringify({ lat, lng, weather }),
     });
 
-    if (response.status === 504) {
-      console.log(
-        `Received 504 Gateway Timeout, retrying in ${delayDuration}ms...`
-      );
-      await delay(delayDuration);
-      attempt++;
-      continue;
-    }
     if (!response.ok) {
       throw new Error(`Error: ${response.statusText}`);
     }

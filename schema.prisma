@@ -8,9 +8,10 @@ datasource db {
     directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model advisory {
-    id                 Int    @id @default(autoincrement())
-    recommendationType String
-    fieldId            BigInt
-    value              String
+model rec {
+    id         Int      @id @default(autoincrement())
+    lat        Float
+    lng        Float
+    rec        String
+    created_at DateTime @default(now())
 }

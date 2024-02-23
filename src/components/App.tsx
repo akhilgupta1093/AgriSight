@@ -35,8 +35,8 @@ export const App = ({
     ];
     setLoading(true);
     const rec = await handleRobotRec(
-      coordinates[0].toString(),
-      coordinates[1].toString(),
+      coordinates[0],
+      coordinates[1],
       weatherForecast
     );
     setCustomRec(rec);
