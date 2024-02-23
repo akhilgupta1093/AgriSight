@@ -13,6 +13,8 @@ export default async function handle(
     date: dateTemp,
   }: { lat: number; lng: number; date: Date } = req.body;
   const date = new Date(dateTemp);
+  console.log("inputs", lat, lng, date);
+  console.log("prisma", prisma);
   // get record with the same rec, lat, lng, and same day of the created_at
   const recommendation = await prisma.rec.findFirst({
     where: {
@@ -24,6 +26,7 @@ export default async function handle(
       },
     },
   });
+  console.log("recommendation", recommendation);
   res.json(recommendation);
 }
 
