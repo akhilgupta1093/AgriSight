@@ -23,7 +23,7 @@ export const saveRec = async (
   lng: number
 ): Promise<void> => {
   try {
-    const response = await fetcher("/api/saveRec", {
+    const response = await fetch("/api/saveRec", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
