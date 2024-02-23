@@ -22,6 +22,7 @@ export const getRobotRec = async (
   weather: string
 ): Promise<RobotResponse> => {
   const existingRec = await getRec(lat, lng, new Date());
+  console.log("Existing rec", existingRec);
   if (existingRec != null) {
     console.log("Using existing recommendation");
     const parsed: RobotResponse = JSON.parse(existingRec.rec);
