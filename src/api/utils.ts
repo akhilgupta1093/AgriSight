@@ -29,6 +29,7 @@ export const fetcher = async (
   relative_url: string,
   options: RequestInit
 ): Promise<any> => {
+  console.log("process.env.url", process.env.url);
   const url = process.env.VERCEL_URL;
   const protocol =
     process.env.VERCEL_URL && process.env.VERCEL_URL.includes("localhost")
