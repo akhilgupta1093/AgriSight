@@ -155,9 +155,21 @@ export const Rec = ({
           {customRec[day].work != null && (
             <Chip
               label={
-                <div className="font-bold">
-                  {customRec[day].work.numTasks} tasks (
-                  {customRec[day].work.numHours} hours)
+                <div className="flex gap-1 items-center">
+                  <div className="font-bold">
+                    {customRec[day].work.numTasks} tasks (
+                    {customRec[day].work.numHours} hours)
+                  </div>
+                  <Tooltip
+                    title={
+                      <div className="whitespace-break-spaces">
+                        {customRec[day].work.tasks.join(", ")}
+                      </div>
+                    }
+                    key={day}
+                  >
+                    <IconInfoCircle size={15} />
+                  </Tooltip>
                 </div>
               }
               color="success"
