@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { robotRec } from "@/openai/openai";
 import { OpenWeatherMapResponse } from "@/api/types";
 import { RobotResponse } from "@/openai/robotRec";
-import { delay } from "@/api/utils";
+import { delay, fetcher } from "@/api/utils";
 
 export default async function handle(
   req: NextApiRequest,

@@ -34,5 +34,6 @@ export const fetcher = async (
     process.env.VERCEL_URL && process.env.VERCEL_URL.includes("localhost")
       ? "http://"
       : "https://";
+  console.log("getting from url", `${protocol}${url}${relative_url}`);
   return await fetch(`${protocol}${url}${relative_url}`, options);
 };
