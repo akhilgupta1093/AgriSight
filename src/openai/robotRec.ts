@@ -36,7 +36,7 @@ export const getRobotRec = async (
           irrigation: { type: "string", description: "Irrigation advice" },
           irrigationShort: {
             type: "string",
-            description: "A very short version of the irrigation advice above",
+            description: "A short summary of the irrigation advice",
           },
           disease: {
             type: "string",
@@ -44,7 +44,7 @@ export const getRobotRec = async (
           },
           diseaseShort: {
             type: "string",
-            description: "A very short version of the disease advice above",
+            description: "A short summary of the disease advice",
           },
           work: {
             type: "object",
@@ -75,7 +75,7 @@ export const getRobotRec = async (
           irrigation: { type: "string", description: "Irrigation advice" },
           irrigationShort: {
             type: "string",
-            description: "A very short version of the irrigation advice above",
+            description: "A short summary of the irrigation advice",
           },
           disease: {
             type: "string",
@@ -83,7 +83,7 @@ export const getRobotRec = async (
           },
           diseaseShort: {
             type: "string",
-            description: "A very short version of the disease advice above",
+            description: "A short summary of the disease advice",
           },
           work: {
             type: "object",
@@ -114,7 +114,7 @@ export const getRobotRec = async (
           irrigation: { type: "string", description: "Irrigation advice" },
           irrigationShort: {
             type: "string",
-            description: "A very short version of the irrigation advice above",
+            description: "A short summary of the irrigation advice",
           },
           disease: {
             type: "string",
@@ -122,7 +122,7 @@ export const getRobotRec = async (
           },
           diseaseShort: {
             type: "string",
-            description: "A very short version of the disease advice above",
+            description: "A short summary of the disease advice",
           },
           work: {
             type: "object",
@@ -153,7 +153,7 @@ export const getRobotRec = async (
           irrigation: { type: "string", description: "Irrigation advice" },
           irrigationShort: {
             type: "string",
-            description: "A very short version of the irrigation advice above",
+            description: "A short summary of the irrigation advice",
           },
           disease: {
             type: "string",
@@ -161,7 +161,7 @@ export const getRobotRec = async (
           },
           diseaseShort: {
             type: "string",
-            description: "A very short version of the disease advice above",
+            description: "A short summary of the disease advice",
           },
           work: {
             type: "object",
@@ -192,7 +192,7 @@ export const getRobotRec = async (
           irrigation: { type: "string", description: "Irrigation advice" },
           irrigationShort: {
             type: "string",
-            description: "A very short version of the irrigation advice above",
+            description: "A short summary of the irrigation advice",
           },
           disease: {
             type: "string",
@@ -200,7 +200,7 @@ export const getRobotRec = async (
           },
           diseaseShort: {
             type: "string",
-            description: "A very short version of the disease advice above",
+            description: "A short summary of the disease advice",
           },
           work: {
             type: "object",
@@ -256,7 +256,7 @@ export const getRobotRec = async (
 
 const checkAndSave = async (resp: RobotResponse, lat: number, lng: number) => {
   // Check if all fields in the response are present. If so, save to db.
-  const allThere = check(resp);
+  const allThere = goodRec(resp);
   const existingRec = await getRec(lat, lng, new Date());
   if (allThere && existingRec == null) {
     console.log("Got a good response. Saving to db.");
@@ -265,15 +265,17 @@ const checkAndSave = async (resp: RobotResponse, lat: number, lng: number) => {
   }
 };
 
-const check = (resp: RobotResponse): boolean => {
+export const goodRec = (resp: RobotResponse): boolean => {
   let allThere = true;
   const days = ["date1", "date2", "date3", "date4", "date5"];
   for (const day of days) {
     const dayObj = resp[day];
     if (
       !dayObj.irrigation ||
+      dayObj.irrigation.length < 10 ||
       !dayObj.irrigationShort ||
       !dayObj.disease ||
+      dayObj.disease.length < 10 ||
       !dayObj.diseaseShort ||
       !dayObj.work.numTasks ||
       !dayObj.work.numHours ||

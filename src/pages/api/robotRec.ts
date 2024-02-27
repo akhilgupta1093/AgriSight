@@ -2,7 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { robotRec } from "@/openai/openai";
 import { OpenWeatherMapResponse } from "@/api/types";
 import { RobotResponse } from "@/openai/robotRec";
-import { delay, fetcher } from "@/api/utils";
+import { delay } from "@/api/utils";
+import { goodRec } from "@/openai/robotRec";
 
 export default async function handle(
   req: NextApiRequest,
@@ -41,7 +42,7 @@ export const handleRobotRec = async (
 
     const result: RobotResponse = await response.json();
 
-    if (Object.keys(result).length !== 0) {
+    if (Object.keys(result).length !== 0 || !goodRec(result)) {
       return result;
     } else if (attempt < retries - 1) {
       console.log(`Received empty response, retrying in ${delayDuration}ms...`);

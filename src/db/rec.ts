@@ -6,13 +6,15 @@ export const getRec = async (
   lng: number,
   date: Date
 ): Promise<rec | null> => {
+  const lowerBound = new Date(date.setHours(0, 0, 0, 0));
+  const upperBound = new Date(new Date(date).setDate(date.getDate() + 1));
   return prisma.rec.findFirst({
     where: {
       lat,
       lng,
       created_at: {
-        gte: new Date(date.setHours(0, 0, 0, 0)),
-        lt: new Date(new Date(date).setDate(date.getDate() + 1)),
+        gte: lowerBound,
+        lt: upperBound,
       },
     },
   });

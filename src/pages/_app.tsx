@@ -27,13 +27,13 @@ const Bar = () => {
 
   const { fieldName } = useFieldName();
   return (
-    <div className="bg-green-50 p-4 pr-10 flex items-center justify-between">
+    <div className="bg-green-50 p-4 pr-10 flex flex-col items-center justify-between gap-2 sm:flex-row">
       <div className="flex gap-1 items-center">
-        <img src="/leaf.ico" alt="logo" className="h-10 w-10" />
-        <h1 className="text-4xl">GrowSight</h1>
+        <img src="/leaf.ico" alt="logo" className="h-10 sm:w-10" />
+        <h1 className="text-l sm:text-4xl">GrowSight</h1>
       </div>
       {fieldName != null && fieldName !== "" && (
-        <div className="flex gap-4">
+        <div className="flex gap-4 flex-col sm:flex-row">
           <Chip
             label={
               <Link href={`/${fieldName}`}>

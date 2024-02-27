@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { robotDiseaseDetection } from "@/openai/openai";
-import { fetcher } from "@/api/utils";
 
 export default async function handle(
   req: NextApiRequest,
