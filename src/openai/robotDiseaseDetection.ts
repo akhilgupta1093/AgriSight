@@ -10,7 +10,7 @@ export async function getRobotDiseaseDetection(
       {
         role: "system",
         content:
-          "You are an agronomist/plant pathologist/horticulture specialist. You conservatively diagnose plant disease and provide advice on how to mitigate and prevent them.",
+          "You are an agronomist/plant pathologist/horticulture specialist. You diagnose plant disease and provide advice on how to mitigate and prevent them.",
       },
       {
         role: "user",
