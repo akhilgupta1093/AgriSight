@@ -11,7 +11,7 @@ Here are the visual symptoms of the diseases I am concerned about:
 - Pierce's Disease: Leaf scorch, shriveled fruit, vine death.
 - Flavescence Dorée: Yellowing leaves, stunted growth, shriveled grapes.
 
-Respond with a disease name, or "no disease", with a percentage confidence level and a short justification for your diagnosis (< 100 words).
+Respond with a crop disease name, or "no disease", with a percentage confidence level and a short justification for your diagnosis (< 100 words).
 `;
 
 export async function getRobotDiseaseDetection(
