@@ -1,5 +1,19 @@
 import OpenAI from "openai";
 
+const prompt = `
+Here is a picture of my grapevine crop. Does my crop have a disease? 
+Here are the visual symptoms of the diseases I am concerned about:
+- Powdery Mildew: White, powdery fungal spots on leaves and fruit.
+- Downy Mildew: Yellow spots on leaves, white mold underside.
+- Noble Rot: Grapes shrink, skin turns brown with a fuzzy coating.
+- Phylloxera: Yellowing leaves, root galls, stunted grapevine growth.
+- Bunch Rot: Brown, rotted grapes with a moldy appearance.
+- Pierce's Disease: Leaf scorch, shriveled fruit, vine death.
+- Flavescence Dorée: Yellowing leaves, stunted growth, shriveled grapes.
+
+Respond with a disease name, or "no disease", with a percentage confidence level and a short justification for your diagnosis (< 100 words).
+`;
+
 export async function getRobotDiseaseDetection(
   imageBase64: string
 ): Promise<string> {
@@ -14,8 +28,7 @@ export async function getRobotDiseaseDetection(
       },
       {
         role: "user",
-        content:
-          "Here is a picture of my grapevine crop. Does my crop have a disease? I am particularly concerned about powdery mildew, downy mildew, noble rot, phylloxera, bunch rot, pierce's disease, and flavesence doree.",
+        content: prompt,
       },
       {
         role: "user",
