@@ -9,13 +9,13 @@ const FileUpload = ({
 }) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isHovering, setIsHovering] = useState<boolean>(false); // State to track hover status
-  const maxFileSize = 750 * 1024; // 750KB in bytes
+  const maxFileSize = 750 * 1024;
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       if (file.size > maxFileSize) {
-        alert("File size should not exceed 750KB.");
+        alert(`File size should not exceed ${maxFileSize / 1024}KB.`);
         return; // Exit the function if file is too large
       }
       setSelectedFile(file);
@@ -29,7 +29,7 @@ const FileUpload = ({
     if (event.dataTransfer.files && event.dataTransfer.files[0]) {
       const file = event.dataTransfer.files[0];
       if (file.size > maxFileSize) {
-        alert("File size should not exceed 750KB.");
+        alert(`File size should not exceed ${maxFileSize / 1024}KB.`);
         return; // Exit the function if file is too large
       }
       setSelectedFile(file);
