@@ -33,14 +33,17 @@ export const getRobotRec = async (
       date1: {
         type: "object",
         properties: {
-          irrigation: { type: "string", description: "Irrigation advice" },
+          irrigation: {
+            type: "string",
+            description: "Long-form irrigation advice",
+          },
           irrigationShort: {
             type: "string",
             description: "A short summary of the irrigation advice",
           },
           disease: {
             type: "string",
-            description: "Disease mitigation and prevention advice",
+            description: "Long-form disease mitigation and prevention advice",
           },
           diseaseShort: {
             type: "string",
@@ -72,14 +75,17 @@ export const getRobotRec = async (
       date2: {
         type: "object",
         properties: {
-          irrigation: { type: "string", description: "Irrigation advice" },
+          irrigation: {
+            type: "string",
+            description: "Long-form irrigation advice",
+          },
           irrigationShort: {
             type: "string",
             description: "A short summary of the irrigation advice",
           },
           disease: {
             type: "string",
-            description: "Disease mitigation and prevention advice",
+            description: "Long-form disease mitigation and prevention advice",
           },
           diseaseShort: {
             type: "string",
@@ -111,14 +117,17 @@ export const getRobotRec = async (
       date3: {
         type: "object",
         properties: {
-          irrigation: { type: "string", description: "Irrigation advice" },
+          irrigation: {
+            type: "string",
+            description: "Long-form irrigation advice",
+          },
           irrigationShort: {
             type: "string",
             description: "A short summary of the irrigation advice",
           },
           disease: {
             type: "string",
-            description: "Disease mitigation and prevention advice",
+            description: "Long-form disease mitigation and prevention advice",
           },
           diseaseShort: {
             type: "string",
@@ -150,14 +159,17 @@ export const getRobotRec = async (
       date4: {
         type: "object",
         properties: {
-          irrigation: { type: "string", description: "Irrigation advice" },
+          irrigation: {
+            type: "string",
+            description: "Long-form irrigation advice",
+          },
           irrigationShort: {
             type: "string",
             description: "A short summary of the irrigation advice",
           },
           disease: {
             type: "string",
-            description: "Disease mitigation and prevention advice",
+            description: "Long-form disease mitigation and prevention advice",
           },
           diseaseShort: {
             type: "string",
@@ -189,14 +201,17 @@ export const getRobotRec = async (
       date5: {
         type: "object",
         properties: {
-          irrigation: { type: "string", description: "Irrigation advice" },
+          irrigation: {
+            type: "string",
+            description: "Long-form irrigation advice",
+          },
           irrigationShort: {
             type: "string",
             description: "A short summary of the irrigation advice",
           },
           disease: {
             type: "string",
-            description: "Disease mitigation and prevention advice",
+            description: "Long-form disease mitigation and prevention advice",
           },
           diseaseShort: {
             type: "string",
