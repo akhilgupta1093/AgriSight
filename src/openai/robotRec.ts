@@ -21,6 +21,7 @@ export const getRobotRec = async (
   weather: string,
   health: string
 ): Promise<RobotResponse> => {
+  console.log("Base prompt", basePrompt(lat, lng, weather, health));
   const existingRec = await getRec(lat, lng, new Date());
   console.log("Existing rec", existingRec);
   if (existingRec != null) {
@@ -293,10 +294,10 @@ export const goodRec = (resp: RobotResponse): boolean => {
     const dayObj = resp[day];
     if (
       !dayObj.irrigation ||
-      dayObj.irrigation.length < 10 ||
+      dayObj.irrigation.length < 20 ||
       !dayObj.irrigationShort ||
       !dayObj.disease ||
-      dayObj.disease.length < 10 ||
+      dayObj.disease.length < 20 ||
       !dayObj.diseaseShort ||
       !dayObj.work.numTasks ||
       !dayObj.work.numHours ||

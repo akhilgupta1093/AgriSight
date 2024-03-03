@@ -37,3 +37,11 @@ export const fetcher = async (
   console.log("getting from url", `${protocol}${url}${relative_url}`);
   return await fetch(`${protocol}${url}${relative_url}`, options);
 };
+
+export function convertYYYYMMDDToDate(dateString: string) {
+  const year = parseInt(dateString.substring(0, 4), 10);
+  const month = parseInt(dateString.substring(4, 6), 10) - 1; // JavaScript months are 0-indexed
+  const day = parseInt(dateString.substring(6, 8), 10);
+
+  return new Date(year, month, day);
+}
