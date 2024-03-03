@@ -25,9 +25,11 @@ const MAX_DAYS = 5;
 export const DailyRec = ({
   customRec,
   weatherForecast,
+  longRec = false,
 }: {
   customRec: RobotResponse;
   weatherForecast: OpenWeatherMapResponse;
+  longRec?: boolean;
 }) => {
   if (!weatherForecast.daily) {
     return <div></div>;
@@ -45,7 +47,7 @@ export const DailyRec = ({
   }
   return (
     <div>
-      <div className="grid grid-cols-4 gap-2">
+      <div className="flex flex-col sm:grid sm:grid-cols-4 gap-2">
         {Object.keys(customRec).map((day, i) => {
           if (i === 0) return;
           if (i > MAX_DAYS - 1) return;
@@ -56,6 +58,7 @@ export const DailyRec = ({
               day={day}
               weather={weatherForecast.daily[i]}
               dateString={format(dates[i], "EEEE, MMM d")}
+              longRec={longRec}
             />
           );
         })}

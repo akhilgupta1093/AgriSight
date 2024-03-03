@@ -37,7 +37,8 @@ export const App = ({
     const rec = await handleRobotRec(
       coordinates[0],
       coordinates[1],
-      weatherForecast
+      weatherForecast,
+      data.Health
     );
     setCustomRec(rec);
     setLoading(false);
@@ -47,6 +48,7 @@ export const App = ({
     setFieldLoading(true);
     getField(fieldId).then((farmResp: FieldData) => {
       setData(farmResp);
+      console.log("farmResp", farmResp);
       setFieldLoading(false);
       setLoading(true);
       getOpenWeatherMapData(farmResp.CenterLat, farmResp.CenterLong).then(
@@ -73,7 +75,7 @@ export const App = ({
       </div>
       {data ? (
         <div className="flex flex-col gap-3">
-          <div className="grid grid-cols-2 gap-2">
+          <div className="flex flex-col sm:grid sm:grid-cols-2 gap-2">
             {fieldLoading ? (
               <CircularProgress className="self-center" />
             ) : (
@@ -100,7 +102,11 @@ export const App = ({
             )}
           </div>
           {customRec != null && weatherForecast != null && (
-            <DailyRec customRec={customRec} weatherForecast={weatherForecast} />
+            <DailyRec
+              customRec={customRec}
+              weatherForecast={weatherForecast}
+              longRec={true}
+            />
           )}
         </div>
       ) : (

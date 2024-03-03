@@ -71,6 +71,55 @@ export interface FieldData {
     };
   };
   hUnits: number;
+  Health: IndexHealthData;
+}
+
+export interface IndexHealthData {
+  avi: {
+    [key: string]: string;
+  };
+  bsi: {
+    [key: string]: string;
+  };
+  evi: {
+    [key: string]: string;
+  };
+  lai: {
+    [key: string]: string;
+  };
+  ndmi: {
+    [key: string]: string;
+  };
+  ndre: {
+    [key: string]: string;
+  };
+  ndvi: {
+    [key: string]: string;
+  };
+  ndwi: {
+    [key: string]: string;
+  };
+  rsm: {
+    [key: string]: string;
+  };
+  rvi: {
+    [key: string]: string;
+  };
+  savi: {
+    [key: string]: string;
+  };
+  si: {
+    [key: string]: string;
+  };
+  soc: {
+    [key: string]: string;
+  };
+  vari: {
+    [key: string]: string;
+  };
+  vssi: {
+    [key: string]: string;
+  };
 }
 
 export interface WeatherForecastData {

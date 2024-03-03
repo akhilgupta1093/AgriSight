@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { robotRec } from "@/openai/openai";
-import { OpenWeatherMapResponse } from "@/api/types";
+import { IndexHealthData, OpenWeatherMapResponse } from "@/api/types";
 import { RobotResponse } from "@/openai/robotRec";
 import { delay } from "@/api/utils";
 import { goodRec } from "@/openai/robotRec";
@@ -13,8 +13,14 @@ export default async function handle(
     lat,
     lng,
     weather,
-  }: { lat: number; lng: number; weather: OpenWeatherMapResponse } = req.body;
-  const rec = await robotRec(lat, lng, weather);
+    healthData,
+  }: {
+    lat: number;
+    lng: number;
+    weather: OpenWeatherMapResponse;
+    healthData: IndexHealthData;
+  } = req.body;
+  const rec = await robotRec(lat, lng, weather, healthData);
   res.send(rec);
 }
 
@@ -22,6 +28,7 @@ export const handleRobotRec = async (
   lat: number,
   lng: number,
   weather: OpenWeatherMapResponse,
+  healthData: IndexHealthData,
   retries = 5,
   delayDuration = 1000
 ): Promise<RobotResponse> => {
@@ -33,7 +40,7 @@ export const handleRobotRec = async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ lat, lng, weather }),
+      body: JSON.stringify({ lat, lng, weather, healthData }),
     });
 
     if (!response.ok) {
@@ -42,7 +49,7 @@ export const handleRobotRec = async (
 
     const result: RobotResponse = await response.json();
 
-    if (Object.keys(result).length !== 0 || !goodRec(result)) {
+    if (Object.keys(result).length !== 0 && goodRec(result)) {
       return result;
     } else if (attempt < retries - 1) {
       console.log(`Received empty response, retrying in ${delayDuration}ms...`);

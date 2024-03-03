@@ -18,7 +18,8 @@ export interface RobotResponse {
 export const getRobotRec = async (
   lat: number,
   lng: number,
-  weather: string
+  weather: string,
+  health: string
 ): Promise<RobotResponse> => {
   const existingRec = await getRec(lat, lng, new Date());
   console.log("Existing rec", existingRec);
@@ -257,7 +258,7 @@ export const getRobotRec = async (
       },
       {
         role: "user",
-        content: basePrompt(lat, lng, weather),
+        content: basePrompt(lat, lng, weather, health),
       },
     ],
     model: "gpt-4",
@@ -308,13 +309,19 @@ export const goodRec = (resp: RobotResponse): boolean => {
   return allThere;
 };
 
-const basePrompt = (lat: number, lng: number, weather: string): string => {
+const basePrompt = (
+  lat: number,
+  lng: number,
+  weather: string,
+  health: string
+): string => {
   const today = new Date();
   return `I need irrigation and pest & disease advice for the next five days for a grape farm located in Latitude: ${lat}, Longitude: ${lng} with the following details:
     - Weather Forecast: ${weather}
+    - Satellite Indexes: ${health}
     Please provide recommendations on:
         1. When and how much to irrigate to optimize grape yield while conserving water resources.
         2. Pest & disease management advice for the next five days.
         3. What tasks need to be done and how many hours it will take to complete them for the average vineyard.
-    Take into account the weather and location information provided. Today is ${today.toDateString()}. Provide details for the next 5 days.`;
+    Take into account the weather, index, and location information provided. Today is ${today.toDateString()}. Provide details for the next 5 days.`;
 };
