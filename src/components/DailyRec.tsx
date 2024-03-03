@@ -90,70 +90,74 @@ export const Rec = ({
   const WeatherIcon = getWeatherIcon(weather);
   return (
     <div className={className}>
-      <SubSection.Root className="h-full">
-        <SubSection.Header>{dateString}</SubSection.Header>
-        <SubSection.Body className="flex flex-col gap-3">
-          <div className="flex gap-2 items-center">
-            <h3 className="font-bold">{<WeatherIcon size={50} />}</h3>
-            <div className="flex flex-col">
-              <p className="flex gap-1 items-center">
-                <IconTemperature size={15} /> {weather.temp.min}°F -{" "}
-                {weather.temp.max}°F
-              </p>
-              {weather.rain != null && weather.rain <= 100 && (
+      <SubSection.Root className="h-full flex flex-col">
+        <SubSection.Header className="font-bold text-lg">
+          {dateString}
+        </SubSection.Header>
+        <SubSection.Body className="flex flex-col gap-3 justify-between h-full">
+          <div className="flex flex-col gap-3">
+            <div className="flex gap-2 items-center">
+              <h3 className="font-bold">{<WeatherIcon size={50} />}</h3>
+              <div className="flex flex-col">
                 <p className="flex gap-1 items-center">
-                  <IconCloudRain size={15} /> {weather.rain}%
+                  <IconTemperature size={15} /> {weather.temp.min}°F -{" "}
+                  {weather.temp.max}°F
                 </p>
-              )}
-              {weather.clouds != null && weather.clouds <= 100 && (
-                <p className="flex gap-1 items-center">
-                  <IconCloud size={15} /> {weather.clouds}%
-                </p>
-              )}
-              {weather.wind_speed != null && weather.wind_speed > 0 && (
-                <p className="flex gap-1 items-center">
-                  <IconWind size={15} /> {weather.wind_speed} mph
-                </p>
-              )}
+                {weather.rain != null && weather.rain <= 100 && (
+                  <p className="flex gap-1 items-center">
+                    <IconCloudRain size={15} /> {weather.rain}%
+                  </p>
+                )}
+                {weather.clouds != null && weather.clouds <= 100 && (
+                  <p className="flex gap-1 items-center">
+                    <IconCloud size={15} /> {weather.clouds}%
+                  </p>
+                )}
+                {weather.wind_speed != null && weather.wind_speed > 0 && (
+                  <p className="flex gap-1 items-center">
+                    <IconWind size={15} /> {weather.wind_speed} mph
+                  </p>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:flex gap-1">
-            {alerts &&
-              alerts.map((alert) => (
-                <Tooltip
-                  title={
-                    <div className="whitespace-break-spaces">
-                      {alert.description}
-                    </div>
-                  }
-                  key={alert.event}
-                >
-                  <Chip
-                    label={
-                      <div className="flex gap-1 items-center">
-                        {alert.event}
-                        <IconInfoCircle size={12} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:flex gap-1">
+              {alerts &&
+                alerts.map((alert) => (
+                  <Tooltip
+                    title={
+                      <div className="whitespace-break-spaces">
+                        {alert.description}
                       </div>
                     }
-                    color="warning"
-                    size="small"
-                  />
-                </Tooltip>
-              ))}
-          </div>
-          <div className="flex flex-col">
-            <h3 className="font-bold">Irrigation</h3>
-            <p>
-              {longRec
-                ? customRec[day].irrigation
-                : customRec[day].irrigationShort}
-            </p>
-          </div>
-          <div className="flex flex-col">
-            <h3 className="font-bold">Disease</h3>
-            <p>
-              {longRec ? customRec[day].disease : customRec[day].diseaseShort}
-            </p>
+                    key={alert.event}
+                  >
+                    <Chip
+                      label={
+                        <div className="flex gap-1 items-center">
+                          {alert.event}
+                          <IconInfoCircle size={12} />
+                        </div>
+                      }
+                      color="warning"
+                      size="small"
+                    />
+                  </Tooltip>
+                ))}
+            </div>
+            <div className="flex flex-col">
+              <h3 className="font-bold">Irrigation</h3>
+              <p>
+                {longRec
+                  ? customRec[day].irrigation
+                  : customRec[day].irrigationShort}
+              </p>
+            </div>
+            <div className="flex flex-col">
+              <h3 className="font-bold">Disease</h3>
+              <p>
+                {longRec ? customRec[day].disease : customRec[day].diseaseShort}
+              </p>
+            </div>
           </div>
           {customRec[day].work != null && (
             <Chip
